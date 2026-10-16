@@ -1,0 +1,183 @@
+import { formatRelative, formatTimestamp, toDate } from '../../utils/dates';
+import { consolidatedReports, reportNote } from '../../utils/reportIdentity';
+import { speciesLabel } from '../../utils/species';
+import { SourceAttribution } from '../shared/SourceAttribution';
+import { LoadingSpinner } from '../shared/LoadingSpinner';
+import { UpgradeCard } from '../subscription/UpgradeCard';
+import { useAuth } from '../../hooks/useAuth';
+import { subscriptionEnforcementEnabled } from '../../subscriptions/flags';
+import { currentAccessTier } from '../../subscriptions/membership';
+import { presentReport, type ReportLike } from '../../subscriptions/reportAccess';
+import type { AnglerReport } from '../../types/user';
+
+function Field({ label, value }: { label: string; value: string }) {
+  return (
+    <div>
+      <dt className="text-xs text-castiq-muted">{label}</dt>
+      <dd className="mt-0.5 text-sm text-castiq-white">{value}</dd>
+    </div>
+  );
+}
+
+function noteAlreadyIncludes(note: string, value: string): boolean {
+  const text = note.toLowerCase();
+  const wanted = value.toLowerCase().trim();
+  if (wanted.length < 4) return false;
+  if (text.includes(wanted)) return true;
+  const stem = wanted.replace(/ing\b/g, '').trim();
+  return stem.length >= 4 && text.includes(stem);
+}
+
+function recordedFields(report: AnglerReport, note: string | null): { label: string; value: string }[] {
+  const fields: { label: string; value: string }[] = [];
+  if (report.waterTempF != null) fields.push({ label: 'Water temperature', value: `${report.waterTempF}°F` });
+  if (report.structureType?.trim()) fields.push({ label: 'Structure', value: report.structureType.trim() });
+  if (report.depthFt != null) fields.push({ label: 'Target depth', value: `${report.depthFt} ft` });
+  if (report.timeOfDay?.trim()) fields.push({ label: 'Time of day', value: report.timeOfDay });
+  const technique = report.technique?.trim();
+  if (technique && !(note && noteAlreadyIncludes(note, technique))) {
+    fields.push({ label: 'Tactic', value: technique });
+  }
+  if (report.lures?.length) fields.push({ label: 'Lures', value: report.lures.join(', ') });
+  if (report.colors?.length) fields.push({ label: 'Colors', value: report.colors.join(', ') });
+  return fields;
+}
+
+function toReportLike(report: AnglerReport, note: string | null): ReportLike {
+  const reportDate = toDate(report.reportDate);
+  return {
+    reportId: report.reportId,
+    lakeId: report.lakeId,
+    species: report.species ?? [],
+    observedAt: reportDate ? reportDate.getTime() : null,
+    source: report.sourceId,
+    lures: report.lures ?? [],
+    colors: report.colors ?? [],
+    depthFt: report.depthFt,
+    waterTempF: report.waterTempF,
+    technique: report.technique ?? '',
+    timeOfDay: report.timeOfDay ?? '',
+    structureType: report.structureType,
+    conditions: report.conditions ?? '',
+    note,
+  };
+}
+
+function SpeciesReport({ species, report }: { species: string[]; report: AnglerReport }) {
+  const { user } = useAuth();
+  const reportDate = toDate(report.reportDate);
+  const note = reportNote(report);
+  const fields = recordedFields(report, note);
+  const enforced = subscriptionEnforcementEnabled();
+  if (enforced) {
+    const view = presentReport({
+      report: toReportLike(report, note),
+      tier: currentAccessTier(null),
+      now: Date.now(),
+      authenticated: Boolean(user),
+      unlocks: [],
+    });
+    const title = species
+      .filter((name) => name !== 'unspecified')
+      .map((name) => speciesLabel(name))
+      .join(', ') || 'Species not listed';
+    return (
+      <article className="rounded-lg bg-castiq-blue p-4">
+        <h2 className="text-sm font-semibold text-castiq-white">{title}</h2>
+        <p className="mt-1 text-xs text-castiq-muted">
+          Latest report {formatRelative(reportDate)} · {formatTimestamp(reportDate)}
+          {view.olderThanWindow && view.detail === 'full' ? ' · Older than 30 days' : ''}
+        </p>
+        {view.detail === 'full' && view.paid ? (
+          <>
+            {view.paid.note && <p className="mt-3 text-sm text-castiq-white">{view.paid.note}</p>}
+            {fields.length > 0 && (
+              <dl className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3">
+                {fields.map((field) => (
+                  <Field key={field.label} label={field.label} value={field.value} />
+                ))}
+              </dl>
+            )}
+          </>
+        ) : (
+          <UpgradeCard
+            title={view.lock?.code === 'sign_in' ? 'Sign in to open the full report' : 'Full report detail is a Standard benefit'}
+            detail="Dates stay visible. Lures, depth, temperature, and structure stay hidden until an entitled unlock. The server ledger is not deployed, so this button does not spend a credit."
+          />
+        )}
+        <div className="mt-3">
+          <SourceAttribution
+            sourceName={report.sourceId ?? (report.userSubmitted ? 'Angler report' : 'Unknown')}
+            type={report.userSubmitted ? 'user' : 'RSS'}
+          />
+        </div>
+      </article>
+    );
+  }
+  const title = species
+    .filter((name) => name !== 'unspecified')
+    .map((name) => speciesLabel(name))
+    .join(', ') || 'Species not listed';
+
+  return (
+    <article className="rounded-lg bg-castiq-blue p-4">
+      <h2 className="text-sm font-semibold text-castiq-white">{title}</h2>
+      <p className="mt-1 text-xs text-castiq-muted">
+        Latest report {formatRelative(reportDate)} · {formatTimestamp(reportDate)}
+      </p>
+      {note && <p className="mt-3 text-sm text-castiq-white">{note}</p>}
+      {fields.length > 0 && (
+        <dl className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3">
+          {fields.map((field) => (
+            <Field key={field.label} label={field.label} value={field.value} />
+          ))}
+        </dl>
+      )}
+      <div className="mt-3">
+        <SourceAttribution
+          sourceName={report.sourceId ?? (report.userSubmitted ? 'Angler report' : 'Unknown')}
+          type={report.userSubmitted ? 'user' : 'RSS'}
+        />
+      </div>
+    </article>
+  );
+}
+
+export function LakeOverview({
+  species,
+  reports,
+  loading,
+  error,
+}: {
+  species: string;
+  reports: AnglerReport[];
+  loading: boolean;
+  error: Error | null;
+}) {
+  const latest = consolidatedReports(reports);
+
+  return (
+    <div className="space-y-4">
+      {loading && (
+        <div className="flex justify-center rounded-lg bg-castiq-blue py-6">
+          <LoadingSpinner />
+        </div>
+      )}
+      {!loading && error && (
+        <p className="rounded-lg bg-castiq-blue px-4 py-3 text-sm text-castiq-muted">
+          Reports could not be loaded. Refresh the page to try again.
+        </p>
+      )}
+      {!loading && !error && latest.length === 0 && (
+        <p className="rounded-lg bg-castiq-blue px-4 py-3 text-sm text-castiq-muted">
+          {species === 'all'
+            ? 'No public report has been logged for this lake yet.'
+            : `No public report has been logged for ${speciesLabel(species).toLowerCase()} on this lake yet.`}
+        </p>
+      )}
+      {!loading && !error && latest.map((item) => (
+        <SpeciesReport key={`${item.species.join('-')}-${item.report.reportId}`} species={item.species} report={item.report} />
+      ))}
+    </div>
+  );
+}

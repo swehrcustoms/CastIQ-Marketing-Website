@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+Disallow: /account
+Disallow: /login
+Disallow: /onboarding
+Disallow: /profile
+Disallow: /checkout
+Disallow: /lake/
+
+Sitemap: https://castiq-app.vercel.app/sitemap.xml
