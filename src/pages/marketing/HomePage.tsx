@@ -17,7 +17,7 @@ const VALUE = [
   },
   {
     title: 'Plan Your Approach',
-    body: 'Look at species, seasonal tactics, and ice information in the same signed-in workspace.',
+    body: 'Look at species and ice information in the same signed-in workspace. Seasonal tactics open with Standard or Premium.',
   },
 ];
 
@@ -28,7 +28,7 @@ const STEPS = [
   },
   {
     title: 'Explore the Intelligence',
-    body: 'Open fishing reports, species information, available surveys, water details, and tactics for that lake.',
+    body: 'Open species information, available surveys, and water details. Lure, depth, the written report, and tactics open with Standard or Premium.',
   },
   {
     title: 'Prepare for Your Trip',
@@ -118,7 +118,7 @@ export function HomePage() {
       }}>
         <h2 className="text-3xl font-bold">What you can use today</h2>
         <p className="mt-3 max-w-3xl text-castiq-muted">
-          Lake search, dated reports, species filters, surveys that have been loaded, tactics, ice information, saved lakes, and maps when a map token is configured. Real-time alerts, a finished regulation sync, and premium AI are not advertised as complete.
+          Lake search, report dates and species, surveys that have been loaded, ice information, saved lakes, and maps when a map token is configured. Lure, depth, the written report, and tactics are Standard and Premium. Real-time alerts, a finished regulation sync, and premium AI are not advertised as complete.
         </p>
         <Link to="/features" className="ciq-btn-primary mt-6 inline-flex">Explore features</Link>
       </section>
@@ -136,7 +136,7 @@ export function HomePage() {
       <section className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
         <h2 className="text-3xl font-bold">Why CastIQ</h2>
         <p className="mt-4 max-w-3xl text-castiq-muted">
-          CastIQ puts Minnesota lake search, fishing reports, species context, and tactics in one interface so you spend less time hopping between agency pages and report sites. Sources and dates stay attached to the information.
+          CastIQ puts Minnesota lake search, report dates, and species context in one interface so you spend less time hopping between agency pages and report sites. Lure, depth, and tactics open with Standard or Premium. Sources and dates stay attached to the information.
         </p>
       </section>
 

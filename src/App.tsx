@@ -45,7 +45,7 @@ function SiteShell() {
   return (
     <div className="flex min-h-dvh flex-col bg-castiq-blue-dark">
       <AppHeader />
-      <main className={hideNav ? 'flex-1' : 'flex-1 pb-20 md:pb-8'}>
+      <main className={hideNav ? 'flex-1' : 'flex-1 pb-20 lg:pb-8'}>
         <Outlet />
       </main>
       {!hideNav && <AppNav />}

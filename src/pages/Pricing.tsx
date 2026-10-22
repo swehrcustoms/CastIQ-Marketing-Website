@@ -25,7 +25,7 @@ export function Pricing() {
       <section className="mt-12" aria-labelledby="plan-access">
         <h2 id="plan-access" className="text-2xl font-semibold">What each plan can open</h2>
         <p className="mt-2 text-sm text-castiq-muted">
-          Monthly and annual copies of a plan open the same features. The number limits below are proposed and are not turned on. There is no free trial.
+          Monthly and annual copies of a plan open the same features. Full report detail and seasonal tactics are Standard and Premium. Saved-lake number caps below are proposed and are not turned on. There is no free trial.
         </p>
         <div className="mt-4 overflow-x-auto">
           <table className="w-full min-w-[36rem] text-left text-sm">
@@ -40,7 +40,7 @@ export function Pricing() {
             <tbody>
               <tr className="border-t border-white/10"><td className="py-2 pr-3">Lake search</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
               <tr className="border-t border-white/10"><td className="py-2 pr-3">Report dates and sources</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
-              <tr className="border-t border-white/10"><td className="py-2 pr-3">Full report detail</td><td>Proposed: 3 / 30 days</td><td>Eligible reports</td><td>Retained reports</td></tr>
+              <tr className="border-t border-white/10"><td className="py-2 pr-3">Full report detail</td><td>Not included</td><td>Included</td><td>Included</td></tr>
               <tr className="border-t border-white/10"><td className="py-2 pr-3">Saved lakes</td><td>Proposed: 2</td><td>Proposed: 10</td><td>Unlimited</td></tr>
               <tr className="border-t border-white/10"><td className="py-2 pr-3">Ice safety</td><td>Always</td><td>Always</td><td>Always</td></tr>
               <tr className="border-t border-white/10"><td className="py-2 pr-3">Compare lakes and trends</td><td>No</td><td>No</td><td>When the data supports it</td></tr>

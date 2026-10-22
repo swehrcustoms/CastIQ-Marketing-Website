@@ -4,7 +4,7 @@ import { usePageMeta } from '../../marketing/meta';
 const FAQS = [
   {
     q: 'What can I do without paying?',
-    a: 'You can create an account, search Minnesota lakes, read public report dates, and open ice safety guidance. Proposed limits on full reports and saved lakes are not turned on.',
+    a: 'You can create an account, search Minnesota lakes, see which species were reported and when, and open ice guidance. Lure, depth, structure, the written report, and seasonal tactics are Standard and Premium.',
   },
   {
     q: 'Which waters are covered?',

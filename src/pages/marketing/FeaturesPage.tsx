@@ -10,8 +10,8 @@ const FEATURES = [
   },
   {
     title: 'Fishing reports',
-    body: 'Signed-in anglers can open dated reports that have been loaded for a lake, including species, lure, and depth when the report includes them.',
-    status: 'Available in the app',
+    body: 'A signed-in angler can see which species were reported, and when. Lure, depth, structure, and the written report are Standard and Premium.',
+    status: 'Standard and Premium',
     href: '/search',
   },
   {
@@ -28,8 +28,8 @@ const FEATURES = [
   },
   {
     title: 'Seasonal tactics',
-    body: 'The tactics page collects seasonal fishing approaches already in the product.',
-    status: 'Available',
+    body: 'The lure list for a lake is Standard and Premium. Free accounts still see the species on the lake.',
+    status: 'Standard and Premium',
     href: '/tactics',
   },
   {
@@ -55,14 +55,14 @@ const FEATURES = [
 export function FeaturesPage() {
   usePageMeta(
     'Features',
-    'CastIQ features that are available now: Minnesota lake search, dated fishing reports, species filters, surveys, tactics, ice information, saved lakes, and maps.',
+    'CastIQ features: Minnesota lake search, report dates and species, surveys, ice information, and saved lakes. Lure, depth, and tactics are Standard and Premium.',
     '/features',
   );
   return (
     <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
       <h1 className="text-4xl font-black uppercase tracking-tight">Features</h1>
       <p className="mt-4 max-w-3xl text-castiq-muted">
-        Each item below is something the current CastIQ app can do. Alerts, unlimited history, and premium AI are not listed because they are not finished products.
+        Each item below is something the current CastIQ app can do. Lure, depth, structure, the written report, and seasonal tactics require Standard or Premium. Alerts, unlimited history, and premium AI are not listed because they are not finished products.
       </p>
       <ul className="mt-10 space-y-4">
         {FEATURES.map((feature) => (

@@ -23,13 +23,13 @@ export function HowItWorksPage() {
         <li className="rounded-2xl border border-white/10 p-6">
           <h2 className="text-2xl font-semibold">2. Read what is actually there</h2>
           <p className="mt-2 text-castiq-muted">
-            After you sign in, the lake page can show reports, species filters, surveys, and water information that have been loaded. Species filters narrow the list. They do not create new data.
+            After you sign in, the lake page shows which species were reported, and when, plus surveys and water information that have been loaded. Lure, depth, and the written report are Standard and Premium. Species filters narrow the list. They do not create new data.
           </p>
         </li>
         <li className="rounded-2xl border border-white/10 p-6">
           <h2 className="text-2xl font-semibold">3. Plan the trip</h2>
           <p className="mt-2 text-castiq-muted">
-            Use the freshness of a report, the tactics page, and ice guidance as inputs. CastIQ does not decide whether ice is safe or whether a regulation has changed today.
+            Use the date on a report and ice guidance as inputs. Lure, depth, and seasonal tactics open with Standard or Premium. CastIQ does not decide whether ice is safe or whether a regulation has changed today.
           </p>
           <Link to="/login" state={{ from: '/search', mode: 'signup' }} className="ciq-btn-primary mt-4 inline-flex">Get started free</Link>
         </li>
